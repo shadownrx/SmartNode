@@ -1,11 +1,19 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const apiRoutes = require('./routes/api');
+const admin = require('firebase-admin');
+const serviceAccount = require('../config/serviceAccountKey.json'); // Actualiza la ruta
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://your-database-name.firebaseio.com"
+});
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+
+const apiRoutes = require('./routes/api');
 
 app.use('/api', apiRoutes);
 
